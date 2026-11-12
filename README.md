@@ -18,3 +18,7 @@ Either way, SoulSilver is only read for the addresses in its tables, as upstream
 `upstream.env` pins the upstream release (`FULLDEX_TAG`, `FULLDEX_COMMIT`) and the pokeheartgold commit. A port release is `<upstream tag>-<n>`, for example `fulldex-2026-11-08-1`.
 
 ## Updates on the device
+
+## Testing on the handheld
+
+`tools/device.sh` drives the device over SSH, at the address in `DEVICE` (`DEVICE=root@<handheld address> tools/device.sh ...`): `push` installs a build, `run [secs] [game code]` starts the launch script as the menu does and picks that game unattended, `bench`/`frames <rom>` time a DS game headless or in the window, and `logs` fetches `log.txt` (the launch script, PortMaster, the updater) and `game.log` (the program) into `work/device-logs/`. For a crash, a build with `-g` (`docker/configure.sh ... "-DCMAKE_CXX_FLAGS_RELEASE=-O3 -DNDEBUG -g"`), `ulimit -c unlimited` on the device and `docker/Dockerfile.gdb` (gdb-multiarch) read its core.
