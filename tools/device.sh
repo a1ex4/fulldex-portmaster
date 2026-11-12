@@ -2,7 +2,8 @@
 # Test loop on the handheld over SSH (muOS: Configuration > Web Services > SSH).
 #
 #   tools/device.sh push [dir]          install a build (default dist/pokemonfulldex) over the port
-#   tools/device.sh run [secs] [code]   the launch script, as from the menu; a game code (IPKE ...)
+#   tools/device.sh run [secs] [code]   the launch script, as from the menu; a game code (IPKE,
+#                                       IPKF ...; GBA: BPEE, BPRE or GBA-<key> such as GBA-rubyfr)
 #                                       is picked in the list unattended; then the logs
 #   tools/device.sh bench <rom> [n]     a DS game, n frames (default 600) headless, timed
 #   tools/device.sh frames <rom> [n]    a DS game, n frames (default 1200) in the window, timed
@@ -47,7 +48,7 @@ case "${1:-}" in
         on "cd '$SCRIPTS' && SSR_LIST_PICK='$code' timeout $secs bash '$SCRIPT' >/dev/null 2>&1; echo \"launch script: exit \$?\"; $STOP"
         logs ;;
     bench|frames)
-        [ -n "${2:-}" ] || { sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
+        [ -n "${2:-}" ] || { sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
         r="$(rom "$2")"
         case "$r" in *.nds) ;; *) echo "$1 takes DS games only: GBA games play inside the game list (run <secs> <code>)" >&2; exit 1 ;; esac
         if [ "$1" = bench ]; then n="${3:-600}" mode=--headless; else n="${3:-1200}" mode=; fi
@@ -55,5 +56,5 @@ case "${1:-}" in
             grep -E '^\[(widegpu|display|60fps)\]' /tmp/fdx-$1.log; echo \"$1 $r: $n frames in \$((e - s)) s, exit \$rc (60 frames = 1 s at full speed, plus start-up)\"; $STOP" ;;
     logs) logs ;;
     sh) shift; on "cd '$GAME' && $*" ;;
-    *) sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'; exit 1 ;;
+    *) sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'; exit 1 ;;
 esac
