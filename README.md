@@ -16,3 +16,5 @@ Either way, SoulSilver is only read for the addresses in its tables, as upstream
 ## Versions and releases
 
 `upstream.env` pins the upstream release (`FULLDEX_TAG`, `FULLDEX_COMMIT`) and the pokeheartgold commit. A port release is `<upstream tag>-<n>`, for example `fulldex-2026-11-08-1`.
+
+## Updates on the device

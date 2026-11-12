@@ -25,6 +25,12 @@ cd $GAMEDIR
 # processor can keep up (both can be raised in GRAPHICS).
 [ -f settings.cfg ] || cp default.cfg settings.cfg
 
+# Builds with an update address (update.cfg): a newer release goes to PortMaster's autoinstall folder.
+if [ -f update.cfg ]; then
+  update="$(python3 update.py "$controlfolder/autoinstall")"
+  [ $? -eq 10 ] && pm_message "Pokemon Fulldex ${update##*$'\n'} is downloaded: open PortMaster to install it." --timeout 5
+fi
+
 export SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig"
 chmod +x "$GAMEDIR/$BINARY"
 
