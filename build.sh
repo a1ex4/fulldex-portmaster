@@ -15,11 +15,13 @@ SHA1_SS=f8dc38ea20c17541a43b58c5e6d18c1732c7e582   # Pokemon SoulSilver (USA)
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 source "$HERE/upstream.env"
-W="$HERE/work"
+# The work folder (sources, tables, the build): kept between builds, so they are incremental.
+W="${FULLDEX_WORK:-$HERE/work}"
+mkdir -p "$W"
 say() { printf '\n== %s\n' "$*"; }
 fail() { printf '\nerror: %s\n' "$*" >&2; exit 1; }
-# Runs a command in an image, as this user, with the project at /p.
-in_docker() { local image="$1"; shift; docker run --rm -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$HERE:/p" -w /p "$image" "$@"; }
+# Runs a command in an image, as this user, with the project at /p and the work folder at /w.
+in_docker() { local image="$1"; shift; docker run --rm -u "$(id -u):$(id -g)" -e HOME=/tmp -v "$HERE:/p" -v "$W:/w" -w /p "$image" "$@"; }
 
 MODE="" ROM=""
 case "${1:-}" in
@@ -56,7 +58,7 @@ git -C "$GBA/mgba" apply "$SRC/gba/patches/mgba-wide.patch"
 mkdir -p "$GBA/build/patches"
 cp "$SRC/gba/wide-patches/"* "$GBA/build/patches/"
 
-# (Kept between builds of the same upstream commit: CI caches work/gen-tables.)
+# (Kept between builds of the same upstream and pokeheartgold commits.)
 STAMP="$FULLDEX_COMMIT $PHG_COMMIT"
 if [ "$(cat "$W/gen-tables/.stamp" 2>/dev/null)" = "$STAMP" ]; then
     say "SoulSilver and HeartGold's tables: already made for this version"
@@ -66,9 +68,9 @@ rm -rf "$W/gen" "$W/gen-tables"
 if [ "$MODE" = rom ]; then
     [ "$(sha1sum "$ROM" | cut -d' ' -f1)" = "$SHA1_SS" ] || fail "$ROM is not Pokemon SoulSilver (USA)"
     cp "$ROM" "$W/soulsilver-us.nds"
-    in_docker fulldex-decomp bash -c 'cd /p/work/src &&
-        python3 tools/recomp.py --rom /p/work/soulsilver-us.nds --layout layouts/soulsilver-us.json melonDS/src /p/work/gen &&
-        python3 tools/apps.py --layout layouts/soulsilver-us.json /p/work/gen'
+    in_docker fulldex-decomp bash -c 'cd /w/src &&
+        python3 tools/recomp.py --rom /w/soulsilver-us.nds --layout layouts/soulsilver-us.json melonDS/src /w/gen &&
+        python3 tools/apps.py --layout layouts/soulsilver-us.json /w/gen'
     rm -f "$W/soulsilver-us.nds"
 else
     if [ ! -d "$W/pokeheartgold/.git" ]; then
@@ -77,26 +79,26 @@ else
     fi
     git -C "$W/pokeheartgold" fetch -q --depth 1 origin "$PHG_COMMIT"
     git -C "$W/pokeheartgold" checkout -q --force FETCH_HEAD
-    in_docker fulldex-decomp make -C /p/work/pokeheartgold soulsilver -j"$(nproc)"
+    in_docker fulldex-decomp make -C /w/pokeheartgold soulsilver -j"$(nproc)"
     [ "$(sha1sum "$W/pokeheartgold/build/soulsilver.us/pokesoulsilver.us.nds" | cut -d' ' -f1)" = "$SHA1_SS" ] ||
         fail "the decompilation did not build the retail SoulSilver"
-    in_docker fulldex-decomp bash -c 'cd /p/work/src &&
-        python3 tools/recomp.py /p/work/pokeheartgold/build/soulsilver.us melonDS/src /p/work/gen &&
-        python3 tools/apps.py /p/work/pokeheartgold/build/soulsilver.us /p/work/gen'
+    in_docker fulldex-decomp bash -c 'cd /w/src &&
+        python3 tools/recomp.py /w/pokeheartgold/build/soulsilver.us melonDS/src /w/gen &&
+        python3 tools/apps.py /w/pokeheartgold/build/soulsilver.us /w/gen'
 fi
-in_docker fulldex-decomp bash -c 'cd /p/work/src && python3 tools/soulsilver/tables_only.py /p/work/gen /p/work/gen-tables'
+in_docker fulldex-decomp bash -c 'cd /w/src && python3 tools/soulsilver/tables_only.py /w/gen /w/gen-tables'
 rm -rf "$W/gen"   # (the recompiled game code: only the tables are kept)
 echo "$STAMP" > "$W/gen-tables/.stamp"
 fi
 
 say "The function tables"
-in_docker fulldex-cross /p/docker/funcs.sh /p/work/src /p/work/decomp-symbols /p/work/funcs
-in_docker fulldex-cross bash -c 'cd /p/work/src &&
-    python3 tools/regions/package_profiles.py --funcs /p/work/funcs --portable /p/work/gen-tables/rc_portable.cpp'
+in_docker fulldex-cross /p/docker/funcs.sh /w/src /w/decomp-symbols /w/funcs
+in_docker fulldex-cross bash -c 'cd /w/src &&
+    python3 tools/regions/package_profiles.py --funcs /w/funcs --portable /w/gen-tables/rc_portable.cpp'
 
 say "Compiling for aarch64"
-in_docker fulldex-cross /p/docker/configure.sh /p/work/src /p/work/build /p/work/gen-tables /p/work/pokemon-gba-wide >/dev/null
-in_docker fulldex-cross ninja -C /p/work/build ssrecomp
+in_docker fulldex-cross /p/docker/configure.sh /w/src /w/build /w/gen-tables /w/pokemon-gba-wide >/dev/null
+in_docker fulldex-cross ninja -C /w/build ssrecomp
 
 say "The package"
 OUT="$HERE/dist/pokemonfulldex"
