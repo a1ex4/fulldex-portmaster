@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gameList>
+  <game>
+    <path>./Pokemon Fulldex.sh</path>
+    <name>Pokemon Fulldex</name>
+    <desc>The DS and GBA Pokemon games as one widescreen picture, run on built-in melonDS and mGBA cores.</desc>
+    <releasedate>20261108</releasedate>
+    <developer>mamesj</developer>
+    <publisher>mamesj</publisher>
+    <image>./pokemonfulldex/cover.png</image>
+  </game>
+</gameList>

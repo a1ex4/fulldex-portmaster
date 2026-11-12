@@ -1,0 +1,8 @@
+# ROMs never go in the repository.
+roms/
+*.nds
+*.gba
+work/
+dist/
+refs/
+upstream/

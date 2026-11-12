@@ -1,0 +1,7 @@
+# x86_64 image that builds pret/pokeheartgold (SoulSilver US, byte-identical) and runs
+# pokemon-fulldex's recomp.py on it, to make the address tables. Nothing here is shipped.
+FROM ubuntu:24.04
+RUN dpkg --add-architecture i386 && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    bison flex g++ gcc-arm-none-eabi git make cmake ninja-build pkg-config wget curl python3 \
+    python3-pyelftools xz-utils nasm libc6:i386 libpng-dev zlib1g-dev ca-certificates \
+    && rm -rf /var/lib/apt/lists/*

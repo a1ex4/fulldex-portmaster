@@ -1,0 +1,33 @@
+{
+  "version": 4,
+  "name": "pokemonfulldex.zip",
+  "items": [
+    "Pokemon Fulldex.sh",
+    "pokemonfulldex"
+  ],
+  "items_opt": [],
+  "attr": {
+    "title": "Pokemon Fulldex",
+    "porter": [
+      "a1ex"
+    ],
+    "desc": "The DS and GBA Pokemon games as one widescreen picture: Black 2, White 2, Black, White, HeartGold, SoulSilver, Platinum, Diamond, Pearl, Emerald, Ruby, Sapphire, FireRed and LeafGreen, run on built-in melonDS and mGBA cores.",
+    "desc_md": null,
+    "inst": "Copy your own DS and GBA ROMs (any names) to ports/pokemonfulldex/roms.",
+    "inst_md": "Copy your own DS and GBA ROMs (any names) to `ports/pokemonfulldex/roms`.",
+    "genres": [
+      "rpg"
+    ],
+    "image": null,
+    "rtr": false,
+    "exp": true,
+    "runtime": [],
+    "store": [],
+    "availability": "full",
+    "reqs": [],
+    "arch": [
+      "aarch64"
+    ],
+    "min_glibc": "2.30"
+  }
+}

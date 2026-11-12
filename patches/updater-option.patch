@@ -1,0 +1,18 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5c3a9a0..7c73262 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -348,7 +348,12 @@ else()
+         file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/fulldex-build-id.txt" "${SSR_BUILT_AT}\n")
+         target_sources(ssrecomp PRIVATE frontend/updater.cpp)
+         set_source_files_properties(frontend/updater.cpp PROPERTIES COMPILE_DEFINITIONS "SSR_BUILT_AT=${SSR_BUILT_AT}")
+-        target_compile_definitions(ssrecomp PRIVATE SSR_UPDATER)
++        # (Off for builds other than upstream's downloads, such as PortMaster's: the updater
++        # would replace them with an upstream download.)
++        option(SSR_UPDATER "Offer updates from the upstream releases in the game list" ON)
++        if(SSR_UPDATER)
++            target_compile_definitions(ssrecomp PRIVATE SSR_UPDATER)
++        endif()
+     endif()
+     if(UNIX AND NOT APPLE AND SSR_PC_ALL_GAMES)
+         # The Linux download carries its own SDL2 beside the program (tools/pc/build_all.sh),
