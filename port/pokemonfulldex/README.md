@@ -1,7 +1,15 @@
 ## Installation
-Copy your own DS and GBA ROMs (any names) to `ports/pokemonfulldex/roms`, then pick a game from the list. Saves go in `ports/pokemonfulldex/saves`; an existing `.sav` from another emulator can be put there under the game's name (`soulsilver.sav`, `black2.sav`, ...).
+Copy your own DS and GBA ROMs to `ports/pokemonfulldex/roms`, then pick a game from the list:
 
-Supported: Black 2, White 2, Black, White, HeartGold, SoulSilver, Platinum, Diamond, Pearl (DS) and Emerald, Ruby, Sapphire, FireRed, LeafGreen, Ultra Violet (GBA). See the [upstream README](https://github.com/mamesj/pokemon-fulldex#supported-games) for the regions of each.
+- any file names; subfolders are read too;
+- plain `.nds` and `.gba` files: unzip `.zip` and `.7z` downloads first;
+- unchanged copies of the cartridges (not trimmed, patched or translated).
+
+Already have them elsewhere? **Choose ROMs Folder** on the list's ROMs page reads them from that folder instead.
+
+Supported: Black 2, White 2, Black, White, HeartGold, SoulSilver, Platinum, Diamond, Pearl (DS) and Emerald, Ruby, Sapphire, FireRed, LeafGreen, Ultra Violet (GBA). See the [upstream README](https://github.com/mamesj/pokemon-fulldex#supported-games) for the languages and versions of each.
+
+Saves go in `ports/pokemonfulldex/saves`, one per game and language (`soulsilver.sav`, `heartgold-fr.sav`, `black2-es.sav`, ...): an existing `.sav` from another emulator can be put there under that name.
 
 ## Default Controls
 The program reads the controller directly and plays it as a DS. In the list, the d-pad chooses, A plays and Y opens the settings. While playing, Start opens the pause menu (QUIT returns to the list) and holding the right trigger fast-forwards. **CONTROLS > KEYS AND BUTTONS** in the pause menu changes any of them.

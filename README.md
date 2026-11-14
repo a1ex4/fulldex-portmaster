@@ -1,6 +1,31 @@
 # Pokemon Fulldex for PortMaster
 
-[Pokemon Fulldex](https://github.com/mamesj/pokemon-fulldex) packaged for [PortMaster](https://portmaster.games) on aarch64 handhelds (built for the RG35XX-H on muOS). The release zip goes in the `ports` folder; the ROMs go in `ports/pokemonfulldex/roms`.
+[Pokemon Fulldex](https://github.com/mamesj/pokemon-fulldex) packaged for [PortMaster](https://portmaster.games) on aarch64 handhelds (built for the RG35XX-H on muOS): the DS and GBA Pokémon games as one widescreen picture.
+
+## Installing
+
+1. **Download** `pokemonfulldex.zip` from the [latest release](https://github.com/a1ex4/fulldex-portmaster/releases/latest).
+2. **Install it** with PortMaster: copy the zip, as it is, into PortMaster's `autoinstall` folder (on muOS: `MUOS/PortMaster/autoinstall` on the first SD card), then open PortMaster, which installs it. Or unzip it yourself into your firmware's `ports` folder (muOS: `ports` on either SD card).
+3. **Add your ROMs** (below), then start **Pokemon Fulldex** from Ports and pick a game from the list.
+
+After that, each launch checks for a newer release (a few seconds at most, nothing when offline) and downloads it: open PortMaster to install it. Your ROMs, saves and settings are kept.
+
+### Your ROMs
+
+The port holds none of the games: you bring your own copies.
+
+- Put them in `ports/pokemonfulldex/roms` (the folder is there after installing). Any file names work, and subfolders (one per console, say) are read too.
+- Use the plain `.nds` and `.gba` files: **unzip** `.zip` or `.7z` downloads first, as the list does not read archives. (Ultra Violet can also be its `.ips` patch beside a FireRed 1.0 ROM.)
+- Use unchanged copies of the cartridges (not trimmed, patched or translated): the program recognises each game by its exact contents.
+- Supported: Black 2, White 2, Black, White, HeartGold, SoulSilver, Platinum, Diamond and Pearl (DS); Emerald, Ruby, Sapphire, FireRed, LeafGreen and Ultra Violet (GBA). Which languages and versions of each work: upstream's [supported games](https://github.com/mamesj/pokemon-fulldex#supported-games). The 3DS games are not in this port.
+- Already have your DS and GBA games in another folder (your firmware's own `NDS` and `GBA` folders, say)? On the **ROMs** page of the list, **Choose ROMs Folder** reads them from there instead.
+- To copy them over the network instead of moving the SD card: muOS has SFTP under Configuration > Web Services.
+
+The list shows each game it recognises; a ROM it doesn't is left out of it.
+
+### Your saves
+
+Saves are written to `ports/pokemonfulldex/saves`, one per game and language (`soulsilver.sav`, `heartgold-fr.sav`, `black2-es.sav`, ...). To carry on from another emulator, copy its `.sav` there under that name before starting the game the first time.
 
 ## How it is built
 
