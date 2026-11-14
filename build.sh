@@ -6,10 +6,11 @@
 #
 # The ROM (or the decompilation's build) is only read for the addresses in SoulSilver and
 # HeartGold's tables, as upstream's tools/pc/build_all.sh does: nothing of the game is packaged.
-# Result: dist/pokemonfulldex.zip
 #
-# PORT_VERSION (default dev) is recorded in the package; UPDATE_URL (and UPDATE_TOKEN, for a private
-# repository) add the updater (update.py): without them the package has none.
+# PORT_VERSION (default dev) is recorded in the package; UPDATE_URL (the releases' API address, see
+# README) adds the updater (update.py): without it the package has none.
+# Result: dist/pokemonfulldex.zip and its checksum, dist/pokemonfulldex.zip.sha256 (the release's two
+# files: the updater checks the download against it).
 set -euo pipefail
 
 FULLDEX_URL=https://github.com/mamesj/pokemon-fulldex.git
@@ -118,10 +119,10 @@ cp "$SRC/LICENSE" "$G/licenses/LICENSE.fulldex.txt"
 cp "$SRC/LICENSE-Noto.txt" "$G/licenses/LICENSE.noto.txt"
 cp "$SRC/frontend/fonts/FONT-LICENSES.txt" "$G/licenses/LICENSE.fonts.txt"
 cp "$GBA/mgba/LICENSE" "$G/licenses/LICENSE.mgba.txt"
-# The version (CI: the release tag) and, when given, where update.py looks for newer releases.
+# The version (a release: its tag) and, when given, where update.py looks for newer releases.
 echo "${PORT_VERSION:-dev}" > "$G/version.txt"
 if [ -n "${UPDATE_URL:-}" ]; then
-    printf 'url=%s\ntoken=%s\n' "$UPDATE_URL" "${UPDATE_TOKEN:-}" > "$G/update.cfg"
+    printf 'url=%s\n' "$UPDATE_URL" > "$G/update.cfg"
 else
     rm -f "$G/update.py"
 fi
@@ -137,6 +138,7 @@ with zipfile.ZipFile('pokemonfulldex.zip', 'w', zipfile.ZIP_DEFLATED) as z:
             p = os.path.join(root, d)
             if not os.listdir(p): z.writestr(os.path.relpath(p, 'pokemonfulldex') + '/', '')
 ")
+(cd "$HERE/dist" && sha256sum pokemonfulldex.zip > pokemonfulldex.zip.sha256)
 say "Done: $HERE/dist/pokemonfulldex.zip"
 in_docker fulldex-cross bash -c 'f=/p/dist/pokemonfulldex/pokemonfulldex/pokemon-ds-wide; file "$f";
     aarch64-linux-gnu-readelf -d "$f" | grep NEEDED;

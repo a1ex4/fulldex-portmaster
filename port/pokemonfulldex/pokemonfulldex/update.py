@@ -4,9 +4,10 @@ where PortMaster installs it the next time it is opened.
 
     python3 update.py <autoinstall folder>
 
-update.cfg (written by the build when it is given an update URL) holds url= (an API address that
-answers with the latest release as JSON: tag_name and assets, as GitHub does) and, for a
-private repository, token=. version.txt holds this build's release tag. Builds that are not
+update.cfg (written by the build when it is given an update URL) holds url=: an API address that
+answers with the latest release as JSON (tag_name and assets), such as GitHub's
+https://api.github.com/repos/<owner>/<repo>/releases/latest. version.txt holds this build's
+release tag. Builds that are not
 releases (no fulldex-* tag) and any network or server trouble are left alone, quietly.
 
 Exits 0 when there is nothing to do, 10 when an update was downloaded (its tag on stdout).
@@ -43,10 +44,8 @@ def ssl_context():
         return ssl.create_default_context()
 
 
-def fetch(url, token, timeout):
+def fetch(url, timeout):
     request = urllib.request.Request(url, headers={'User-Agent': 'pokemonfulldex-updater'})
-    if token:
-        request.add_header('Authorization', 'token ' + token)
     return urllib.request.urlopen(request, timeout=timeout, context=ssl_context())
 
 
@@ -61,9 +60,8 @@ def main():
     if not cfg.get('url') or not installed.startswith('fulldex-'):
         return 0
 
-    token = cfg.get('token', '')
     try:
-        with fetch(cfg['url'], token, 5) as response:
+        with fetch(cfg['url'], 5) as response:
             release = json.load(response)
         latest = release['tag_name']
         assets = {a['name']: a['browser_download_url'] for a in release['assets']}
@@ -81,12 +79,12 @@ def main():
     try:
         os.makedirs(autoinstall, exist_ok=True)
         digest = hashlib.sha256()
-        with fetch(assets[ZIP], token, 30) as response, open(part, 'wb') as f:
+        with fetch(assets[ZIP], 30) as response, open(part, 'wb') as f:
             for block in iter(lambda: response.read(1 << 16), b''):
                 digest.update(block)
                 f.write(block)
         if ZIP + '.sha256' in assets:
-            with fetch(assets[ZIP + '.sha256'], token, 10) as response:
+            with fetch(assets[ZIP + '.sha256'], 10) as response:
                 expected = response.read().decode().split()[0]
             if digest.hexdigest() != expected:
                 raise ValueError('the download does not match its checksum')

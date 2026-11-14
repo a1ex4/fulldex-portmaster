@@ -15,9 +15,23 @@ Either way, SoulSilver is only read for the addresses in its tables, as upstream
 
 ## Versions and releases
 
-`upstream.env` pins the upstream release (`FULLDEX_TAG`, `FULLDEX_COMMIT`) and the pokeheartgold commit. A port release is `<upstream tag>-<n>`, for example `fulldex-2026-11-08-1`.
+`upstream.env` pins the upstream release (`FULLDEX_TAG`, `FULLDEX_COMMIT`) and the pokeheartgold commit. A port release is `<upstream tag>-<n>`, for example `fulldex-2026-11-12-1`; n starts again at 1 when upstream moves.
+
+Releases are built locally and uploaded by hand, as upstream does its own:
+
+```
+PORT_VERSION=fulldex-2026-11-12-1 \
+UPDATE_URL=https://api.github.com/repos/<owner>/<repo>/releases/latest \
+./build.sh --decomp
+git tag fulldex-2026-11-12-1 && git push origin fulldex-2026-11-12-1
+gh release create fulldex-2026-11-12-1 dist/pokemonfulldex.zip dist/pokemonfulldex.zip.sha256
+```
+
+To follow a new upstream release, set `FULLDEX_TAG` and `FULLDEX_COMMIT` in `upstream.env` to it, check that `patches/` still apply (`build.sh` stops if not), and release `<new tag>-1`.
 
 ## Updates on the device
+
+Builds made with `UPDATE_URL` (an API address answering with the latest release as JSON, such as GitHub's `releases/latest` above) carry `update.py` and an `update.cfg` with that address. Each launch of the port then asks for the latest release (5 seconds at most; offline it carries on quietly) and, when it is newer than the installed `version.txt`, downloads its zip, checked against its `.sha256`, into PortMaster's `autoinstall` folder, which PortMaster installs the next time it is opened. Only released builds (`fulldex-*` versions) update themselves; other builds (`dev`) never do. Without `UPDATE_URL` the package has no updater at all, as a PortMaster submission should be.
 
 ## Testing on the handheld
 
