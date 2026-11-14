@@ -11,7 +11,10 @@ Upstream's own aarch64 download needs glibc 2.38, newer than most handheld firmw
 ./build.sh --rom soulsilver-us.nds     # or from your own SoulSilver (US) ROM
 ```
 
-Either way, SoulSilver is only read for the addresses in its tables, as upstream's `tools/pc/build_all.sh` does: no game code goes in the zip. `patches/` turns off the in-app updater, which would otherwise replace the build with upstream's glibc 2.38 one.
+Either way, SoulSilver is only read for the addresses in its tables, as upstream's `tools/pc/build_all.sh` does: no game code goes in the zip. `patches/` is applied over the pinned upstream release:
+
+- `updater-option.patch` turns off the in-app updater, which would otherwise replace the build with upstream's glibc 2.38 one.
+- `pr171-battle-strip-label-width.patch` and `pr174-ui-size.patch` are upstream pull requests [#171](https://github.com/mamesj/pokemon-fulldex/pull/171) (battle buttons' labels in other languages) and [#174](https://github.com/mamesj/pokemon-fulldex/pull/174) (a UI Size setting for small screens), until a release includes them; then drop them.
 
 ## Versions and releases
 
