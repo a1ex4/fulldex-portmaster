@@ -24,7 +24,7 @@ Releases are built locally and uploaded by hand, as upstream does its own:
 
 ```
 PORT_VERSION=fulldex-2026-11-12-1 \
-UPDATE_URL=https://api.github.com/repos/<owner>/<repo>/releases/latest \
+UPDATE_URL=https://api.github.com/repos/a1ex4/fulldex-portmaster/releases/latest \
 ./build.sh --decomp
 git tag fulldex-2026-11-12-1 && git push origin fulldex-2026-11-12-1
 gh release create fulldex-2026-11-12-1 dist/pokemonfulldex.zip dist/pokemonfulldex.zip.sha256

@@ -10,10 +10,10 @@ The program reads the controller directly and plays it as a DS. In the list, the
 On the first run the 3D is drawn at the DS's resolution (192P) without 60 fps in-between frames. On faster devices raise **GRAPHICS > 3D RESOLUTION** and turn on 60 FPS. WORLD ON GPU needs desktop OpenGL and falls back to the processor where the GPU only has OpenGL ES.
 
 ## Updates
-Builds made with an update address check for a newer release at each launch and download it to PortMaster's `autoinstall` folder: open PortMaster to install it. The ROMs, saves and settings stay where they are.
+Releases from https://github.com/a1ex4/fulldex-portmaster check for a newer release at each launch and download it to PortMaster's `autoinstall` folder: open PortMaster to install it. The ROMs, saves and settings stay where they are.
 
 ## Building
-Cross-compiled for aarch64 against Debian bullseye (glibc 2.30 or newer needed) from the upstream release named in the version, with the in-app updater turned off so it never replaces this build with the upstream download. The scripts and patches are in the port's build repository.
+Cross-compiled for aarch64 against Debian bullseye (glibc 2.30 or newer needed) from the upstream release named in the version, with the in-app updater turned off so it never replaces this build with the upstream download, and two upstream pull requests applied: a UI Size setting for small screens (#174) and battle buttons' labels in other languages (#171). The scripts and patches are at https://github.com/a1ex4/fulldex-portmaster.
 
 ## Thanks
 mamesj -- Pokemon Fulldex  
