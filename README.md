@@ -25,7 +25,7 @@ The list shows each game it recognises; a ROM it doesn't is left out of it.
 
 ### Your saves
 
-Saves are written to `ports/pokemonfulldex/saves`, one per game and language (`soulsilver.sav`, `heartgold-fr.sav`, `black2-es.sav`, ...). To carry on from another emulator, copy its `.sav` there under that name before starting the game the first time.
+Saves are written to `ports/pokemonfulldex/saves`, one per game and language (`soulsilver.sav`, `heartgold-fr.sav`, `black2-es.sav`, ...). To carry on from another emulator, copy its `.sav` there under that name before starting the game the first time. Save states go in `ports/pokemonfulldex/states` and Fulldex's own settings files in `ports/pokemonfulldex/settings` (since fulldex-2026-11-15: an update moves the old ones there once, by itself).
 
 ## How it is built
 
@@ -39,7 +39,7 @@ Upstream's own aarch64 download needs glibc 2.38, newer than most handheld firmw
 Either way, SoulSilver is only read for the addresses in its tables, as upstream's `tools/pc/build_all.sh` does: no game code goes in the zip. `patches/` is applied over the pinned upstream release:
 
 - `updater-option.patch` turns off the in-app updater, which would otherwise replace the build with upstream's glibc 2.38 one.
-- `pr171-battle-strip-label-width.patch` and `pr174-ui-size.patch` are upstream pull requests [#171](https://github.com/mamesj/pokemon-fulldex/pull/171) (battle buttons' labels in other languages) and [#174](https://github.com/mamesj/pokemon-fulldex/pull/174) (a UI Size setting for small screens), until a release includes them; then drop them.
+- `pr174-ui-size.patch` is upstream pull request [#174](https://github.com/mamesj/pokemon-fulldex/pull/174) (a UI Size setting for small screens), until a release includes it; then drop it. (#171, battle buttons' labels in other languages, is in upstream since fulldex-2026-11-15.)
 
 ## Versions and releases
 

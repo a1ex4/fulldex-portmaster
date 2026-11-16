@@ -9,7 +9,7 @@ Already have them elsewhere? **Choose ROMs Folder** on the list's ROMs page read
 
 Supported: Black 2, White 2, Black, White, HeartGold, SoulSilver, Platinum, Diamond, Pearl (DS) and Emerald, Ruby, Sapphire, FireRed, LeafGreen, Ultra Violet (GBA). See the [upstream README](https://github.com/mamesj/pokemon-fulldex#supported-games) for the languages and versions of each.
 
-Saves go in `ports/pokemonfulldex/saves`, one per game and language (`soulsilver.sav`, `heartgold-fr.sav`, `black2-es.sav`, ...): an existing `.sav` from another emulator can be put there under that name.
+Saves go in `ports/pokemonfulldex/saves`, one per game and language (`soulsilver.sav`, `heartgold-fr.sav`, `black2-es.sav`, ...): an existing `.sav` from another emulator can be put there under that name. Save states are in `ports/pokemonfulldex/states`.
 
 ## Default Controls
 The program reads the controller directly and plays it as a DS. In the list, the d-pad chooses, A plays and Y opens the settings. While playing, Start opens the pause menu (QUIT returns to the list) and holding the right trigger fast-forwards. **CONTROLS > KEYS AND BUTTONS** in the pause menu changes any of them.
@@ -21,7 +21,7 @@ On the first run the 3D is drawn at the DS's resolution (192P) without 60 fps in
 Releases from https://github.com/a1ex4/fulldex-portmaster check for a newer release at each launch and download it to PortMaster's `autoinstall` folder: open PortMaster to install it. The ROMs, saves and settings stay where they are.
 
 ## Building
-Cross-compiled for aarch64 against Debian bullseye (glibc 2.30 or newer needed) from the upstream release named in the version, with the in-app updater turned off so it never replaces this build with the upstream download, and two upstream pull requests applied: a UI Size setting for small screens (#174) and battle buttons' labels in other languages (#171). The scripts and patches are at https://github.com/a1ex4/fulldex-portmaster.
+Cross-compiled for aarch64 against Debian bullseye (glibc 2.30 or newer needed) from the upstream release named in the version, with the in-app updater turned off so it never replaces this build with the upstream download, and an upstream pull request applied: a UI Size setting for small screens (#174). The scripts and patches are at https://github.com/a1ex4/fulldex-portmaster.
 
 ## Thanks
 mamesj -- Pokemon Fulldex  
